@@ -41,6 +41,23 @@ io.on("connection", (socket) => {
 		delete userSocketMap[userId];
 		io.emit("getOnlineUsers", Object.keys(userSocketMap));
 	});
+
+	socket.on("newPost", (post) => {
+        io.emit("newPost", post);
+    });
+
+    socket.on("likePost", ({ postId, userId }) => {
+        io.emit("likePost", { postId, userId });
+    });
+
+    socket.on("unlikePost", ({ postId, userId }) => {
+        io.emit("unlikePost", { postId, userId });
+    });
+
+    socket.on("newComment", ({ postId, comment }) => {
+        io.emit("newComment", { postId, comment });
+    });
+	
 });
 
 export { io, server, app };
