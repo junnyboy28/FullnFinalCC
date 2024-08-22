@@ -1,4 +1,5 @@
 import { AddIcon } from "@chakra-ui/icons";
+import { useSocket } from "../context/SocketContext.jsx";
 import {
 	Button,
 	CloseButton,
@@ -30,6 +31,7 @@ import { useParams } from "react-router-dom";
 const MAX_CHAR = 500;
 
 const CreatePost = () => {
+	const { socket } = useSocket();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [postText, setPostText] = useState("");
 	const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
@@ -54,35 +56,36 @@ const CreatePost = () => {
 		}
 	};
 
-	const handleCreatePost = async () => {
-		setLoading(true);
-		try {
-			const res = await fetch("/api/posts/create", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ postedBy: user._id, text: postText, img: imgUrl }),
-			});
+    const handleCreatePost = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch("/api/posts/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ postedBy: user._id, text: postText, img: imgUrl }),
+            });
 
-			const data = await res.json();
-			if (data.error) {
-				showToast("Error", data.error, "error");
-				return;
-			}
-			showToast("Success", "Post created successfully", "success");
-			if (username === user.username) {
-				setPosts([data, ...posts]);
-			}
-			onClose();
-			setPostText("");
-			setImgUrl("");
-		} catch (error) {
-			showToast("Error", error, "error");
-		} finally {
-			setLoading(false);
-		}
-	};
+            const data = await res.json();
+            if (data.error) {
+                showToast("Error", data.error, "error");
+                return;
+            }
+            showToast("Success", "Post created successfully", "success");
+            
+            // Emit new post event
+            socket.emit("newPost", data);
+
+            onClose();
+            setPostText("");
+            setImgUrl("");
+        } catch (error) {
+            showToast("Error", error, "error");
+        } finally {
+            setLoading(false);
+        }
+    };
 
 	return (
 		<>
