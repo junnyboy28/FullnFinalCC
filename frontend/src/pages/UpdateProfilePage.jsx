@@ -32,6 +32,13 @@ export default function UpdateProfilePage() {
 
 	const { handleImageChange, imgUrl } = usePreviewImg();
 
+	// Color mode values
+	const bgColor = useColorModeValue("copper.100", "purple.800");
+	const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
+	const inputBgColor = useColorModeValue("white", "purple.700");
+	const buttonBgColor = useColorModeValue("copper.400", "purple.500");
+	const buttonHoverBgColor = useColorModeValue("copper.500", "purple.600");
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (updating) return;
@@ -44,7 +51,7 @@ export default function UpdateProfilePage() {
 				},
 				body: JSON.stringify({ ...inputs, profilePic: imgUrl }),
 			});
-			const data = await res.json(); // updated user object
+			const data = await res.json();
 			if (data.error) {
 				showToast("Error", data.error, "error");
 				return;
@@ -58,6 +65,7 @@ export default function UpdateProfilePage() {
 			setUpdating(false);
 		}
 	};
+
 	return (
 		<form onSubmit={handleSubmit}>
 			<Flex align={"center"} justify={"center"} my={6}>
@@ -65,12 +73,12 @@ export default function UpdateProfilePage() {
 					spacing={4}
 					w={"full"}
 					maxW={"md"}
-					bg={useColorModeValue("white", "gray.dark")}
+					bg={bgColor}
 					rounded={"xl"}
 					boxShadow={"lg"}
 					p={6}
 				>
-					<Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
+					<Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }} color={textColor}>
 						User Profile Edit
 					</Heading>
 					<FormControl id='userName'>
@@ -79,7 +87,7 @@ export default function UpdateProfilePage() {
 								<Avatar size='xl' boxShadow={"md"} src={imgUrl || user.profilePic} />
 							</Center>
 							<Center w='full'>
-								<Button w='full' onClick={() => fileRef.current.click()}>
+								<Button w='full' onClick={() => fileRef.current.click()} bg={buttonBgColor} color="white" _hover={{ bg: buttonHoverBgColor }}>
 									Change Avatar
 								</Button>
 								<Input type='file' hidden ref={fileRef} onChange={handleImageChange} />
@@ -87,72 +95,82 @@ export default function UpdateProfilePage() {
 						</Stack>
 					</FormControl>
 					<FormControl>
-						<FormLabel>Full name</FormLabel>
+						<FormLabel color={textColor}>Full name</FormLabel>
 						<Input
 							placeholder='John Doe'
 							value={inputs.name}
 							onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
 							_placeholder={{ color: "gray.500" }}
 							type='text'
+							bg={inputBgColor}
+							color={textColor}
 						/>
 					</FormControl>
 					<FormControl>
-						<FormLabel>User name</FormLabel>
+						<FormLabel color={textColor}>User name</FormLabel>
 						<Input
 							placeholder='johndoe'
 							value={inputs.username}
 							onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
 							_placeholder={{ color: "gray.500" }}
 							type='text'
+							bg={inputBgColor}
+							color={textColor}
 						/>
 					</FormControl>
 					<FormControl>
-						<FormLabel>Email address</FormLabel>
+						<FormLabel color={textColor}>Email address</FormLabel>
 						<Input
 							placeholder='your-email@example.com'
 							value={inputs.email}
 							onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
 							_placeholder={{ color: "gray.500" }}
 							type='email'
+							bg={inputBgColor}
+							color={textColor}
 						/>
 					</FormControl>
 					<FormControl>
-						<FormLabel>Bio</FormLabel>
+						<FormLabel color={textColor}>Bio</FormLabel>
 						<Input
 							placeholder='Your bio.'
 							value={inputs.bio}
 							onChange={(e) => setInputs({ ...inputs, bio: e.target.value })}
 							_placeholder={{ color: "gray.500" }}
 							type='text'
+							bg={inputBgColor}
+							color={textColor}
 						/>
 					</FormControl>
 					<FormControl>
-						<FormLabel>Password</FormLabel>
+						<FormLabel color={textColor}>Password</FormLabel>
 						<Input
 							placeholder='password'
 							value={inputs.password}
 							onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
 							_placeholder={{ color: "gray.500" }}
 							type='password'
+							bg={inputBgColor}
+							color={textColor}
 						/>
 					</FormControl>
 					<Stack spacing={6} direction={["column", "row"]}>
 						<Button
-							bg={"red.400"}
+							bg={buttonBgColor}
 							color={"white"}
 							w='full'
 							_hover={{
-								bg: "red.500",
+								bg: buttonHoverBgColor,
 							}}
 						>
 							Cancel
 						</Button>
 						<Button
-							bg={"green.400"}
+							bg={buttonBgColor}
 							color={"white"}
 							w='full'
 							_hover={{
-								bg: "green.500",
+								bg: buttonHoverBgColor,
 							}}
 							type='submit'
 							isLoading={updating}
