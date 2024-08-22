@@ -14,27 +14,46 @@ const styles = {
 	global: (props) => ({
 		body: {
 			color: mode("gray.800", "whiteAlpha.900")(props),
-			bg: mode("gray.100", "#101010")(props),
+			bg: mode("#E1C4A9", "#4A0E4E")(props),
 		},
 	}),
 };
 
 const config = {
-	initialColorMode: "dark",
+	initialColorMode: "light",  // Changed from "dark" to "light"
 	useSystemColorMode: true,
 };
 
 const colors = {
-	gray: {
-		light: "#616161",
-		dark: "#1e1e1e",
+	copper: {
+		50: "#FDF5EF",
+		100: "#F9E5D5",
+		200: "#F3D0B5",
+		300: "#E1C4A9",
+		400: "#D2A77D",
+		500: "#C28B5B",
+		600: "#A16B3F",
+		700: "#815431",
+		800: "#613E24",
+		900: "#422A18",
+	},
+	purple: {
+		50: "#F5E6FF",
+		100: "#E1BFFF",
+		200: "#CD99FF",
+		300: "#B973FF",
+		400: "#A54DFF",
+		500: "#9127FF",
+		600: "#7A00E6",
+		700: "#6200B3",
+		800: "#4A0E4E",
+		900: "#320A33",
 	},
 };
 
 const theme = extendTheme({ config, styles, colors });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	// React.StrictMode renders every component twice (in the initial render), only in development.
 	<React.StrictMode>
 		<RecoilRoot>
 			<BrowserRouter>
