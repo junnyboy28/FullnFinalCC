@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text, useColorModeValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
@@ -10,6 +10,12 @@ const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
 	const showToast = useShowToast();
+
+	// Color mode values
+	const bgColor = useColorModeValue("copper.100", "purple.800");
+	const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
+	const spinnerColor = useColorModeValue("copper.500", "purple.500");
+
 	useEffect(() => {
 		const getFeedPosts = async () => {
 			setLoading(true);
@@ -34,12 +40,16 @@ const HomePage = () => {
 
 	return (
 		<Flex gap='10' alignItems={"flex-start"}>
-			<Box flex={70}>
-				{!loading && posts.length === 0 && <h1>Follow some users to see the feed</h1>}
+			<Box flex={70} bg={bgColor} p={4} borderRadius="md">
+				{!loading && posts.length === 0 && (
+					<Text color={textColor} fontSize="xl" fontWeight="bold">
+						Follow some users to see the feed
+					</Text>
+				)}
 
 				{loading && (
 					<Flex justify='center'>
-						<Spinner size='xl' />
+						<Spinner size='xl' color={spinnerColor} />
 					</Flex>
 				)}
 
@@ -53,6 +63,9 @@ const HomePage = () => {
 					base: "none",
 					md: "block",
 				}}
+				bg={bgColor}
+				p={4}
+				borderRadius="md"
 			>
 				<SuggestedUsers />
 			</Box>
