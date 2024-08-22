@@ -20,6 +20,13 @@ const ChatPage = () => {
 	const showToast = useShowToast();
 	const { socket, onlineUsers } = useSocket();
 
+	// Color mode values
+	const bgColor = useColorModeValue("copper.100", "purple.800");
+	const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
+	const inputBgColor = useColorModeValue("copper.50", "purple.700");
+	const buttonBgColor = useColorModeValue("copper.300", "purple.500");
+	const buttonHoverBgColor = useColorModeValue("copper.400", "purple.600");
+
 	useEffect(() => {
 		socket?.on("messagesSeen", ({ conversationId }) => {
 			setConversations((prev) => {
@@ -66,6 +73,7 @@ const ChatPage = () => {
 		setSearchingUser(true);
 		try {
 			const res = await fetch(`/api/users/profile/${searchText}`);
+
 			const searchedUser = await res.json();
 			if (searchedUser.error) {
 				showToast("Error", searchedUser.error, "error");
@@ -122,6 +130,7 @@ const ChatPage = () => {
 			w={{ base: "100%", md: "80%", lg: "750px" }}
 			p={4}
 			transform={"translateX(-50%)"}
+			bg={bgColor}
 		>
 			<Flex
 				gap={4}
@@ -133,13 +142,24 @@ const ChatPage = () => {
 				mx={"auto"}
 			>
 				<Flex flex={30} gap={2} flexDirection={"column"} maxW={{ sm: "250px", md: "full" }} mx={"auto"}>
-					<Text fontWeight={700} color={useColorModeValue("gray.600", "gray.400")}>
+					<Text fontWeight={700} color={textColor}>
 						Your Conversations
 					</Text>
 					<form onSubmit={handleConversationSearch}>
 						<Flex alignItems={"center"} gap={2}>
-							<Input placeholder='Search for a user' onChange={(e) => setSearchText(e.target.value)} />
-							<Button size={"sm"} onClick={handleConversationSearch} isLoading={searchingUser}>
+							<Input 
+								placeholder='Search for a user' 
+								onChange={(e) => setSearchText(e.target.value)}
+								bg={inputBgColor}
+								_placeholder={{ color: useColorModeValue("gray.500", "whiteAlpha.700") }}
+							/>
+							<Button 
+								size={"sm"} 
+								onClick={handleConversationSearch} 
+								isLoading={searchingUser}
+								bg={buttonBgColor}
+								_hover={{ bg: buttonHoverBgColor }}
+							>
 								<SearchIcon />
 							</Button>
 						</Flex>
@@ -176,9 +196,10 @@ const ChatPage = () => {
 						alignItems={"center"}
 						justifyContent={"center"}
 						height={"400px"}
+						bg={useColorModeValue("copper.200", "purple.700")}
 					>
-						<GiConversation size={100} />
-						<Text fontSize={20}>Select a conversation to start messaging</Text>
+						<GiConversation size={100} color={useColorModeValue("#A16B3F", "#CD99FF")} />
+						<Text fontSize={20} color={textColor}>Select a conversation to start messaging</Text>
 					</Flex>
 				)}
 
