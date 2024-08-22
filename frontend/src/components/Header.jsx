@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Link, useColorMode } from "@chakra-ui/react";
+import { Button, Flex, Image, Link, useColorMode, Box } from "@chakra-ui/react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { AiFillHome } from "react-icons/ai";
@@ -29,13 +29,17 @@ const Header = () => {
 				</Link>
 			)} */}
 
-			<Image
-				cursor={"pointer"}
-				alt='logo'
-				w={60}
-				src={colorMode === "dark" ? "/light-logo.png" : "/dark-logo.png"}
-				onClick={toggleColorMode}
-			/>
+<Box display="flex" justifyContent="center" alignItems="center" w="100%">
+  <Image
+    cursor={"pointer"}
+    alt="logo"
+    w={60}
+    src={colorMode === "dark" ? "/light-logo.png" : "/dark-logo.png"}
+    onClick={toggleColorMode}
+  />
+</Box>
+
+
 
 			{user && (
 				<Flex alignItems={"center"} gap={4}>
